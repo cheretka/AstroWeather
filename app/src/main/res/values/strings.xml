@@ -16,4 +16,10 @@
     <string name="morning_twilight">Civil morning twilight :</string>
     <string name="evening_twilight">Civil evening twilight :</string>
     <string name="options_activity_name">Options</string>
+    <string name="moon_info">MOON INFO :</string>
+    <string name="sun_info">SUN INFO :</string>
+    <string name="latitude">Latitude :</string>
+    <string name="refresh_frequency">Refresh frequency [s] :</string>
+    <string name="longitude">Longitude :</string>
+    <string name="options">Options</string>
 </resources>

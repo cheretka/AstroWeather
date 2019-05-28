@@ -5,10 +5,19 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/moonriseLabel"
+        android:id="@+id/moonLabel"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="5sp"
+        android:layout_weight="1"
+        android:text="@string/moon_info"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+    <TextView
+        android:id="@+id/moonriseLabel"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:text="@string/moonrise"
         android:textAlignment="center"
@@ -21,7 +30,7 @@
         android:layout_weight="1"
         android:text="@string/blank"
         android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <TextView
         android:id="@+id/moonsetLabel"
@@ -39,7 +48,7 @@
         android:layout_weight="1"
         android:text="@string/blank"
         android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <TextView
         android:id="@+id/newMoonLabel"
@@ -57,7 +66,7 @@
         android:layout_weight="1"
         android:text="@string/blank"
         android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <TextView
         android:id="@+id/fullMoonLabel"
@@ -75,7 +84,7 @@
         android:layout_weight="1"
         android:text="@string/blank"
         android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <TextView
         android:id="@+id/moonPhaseLabel"
@@ -93,7 +102,7 @@
         android:layout_weight="1"
         android:text="@string/blank"
         android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <TextView
         android:id="@+id/synodicDayLabel"
@@ -108,8 +117,9 @@
         android:id="@+id/synodicDayText"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginBottom="5sp"
         android:layout_weight="1"
         android:text="@string/blank"
         android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 </LinearLayout>

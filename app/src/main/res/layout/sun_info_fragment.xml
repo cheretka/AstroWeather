@@ -5,10 +5,19 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/sunriseTimeLabel"
+        android:id="@+id/sunLabel"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="5sp"
+        android:layout_weight="1"
+        android:text="@string/sun_info"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+    <TextView
+        android:id="@+id/sunriseTimeLabel"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:text="@string/sunriseTime"
         android:textAlignment="center"
@@ -21,13 +30,12 @@
         android:layout_weight="1"
         android:text="@string/blank"
         android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <TextView
         android:id="@+id/sunriseAzimuthLabel"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="5sp"
         android:layout_weight="1"
         android:text="@string/sunriseAzimuth"
         android:textAlignment="center"
@@ -40,13 +48,12 @@
         android:layout_weight="1"
         android:text="@string/blank"
         android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <TextView
         android:id="@+id/sunsetTimeLabel"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="5sp"
         android:layout_weight="1"
         android:text="@string/sunsetTime"
         android:textAlignment="center"
@@ -59,13 +66,12 @@
         android:layout_weight="1"
         android:text="@string/blank"
         android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <TextView
         android:id="@+id/sunsetAzimuthLabel"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="5sp"
         android:layout_weight="1"
         android:text="@string/sunsetAzimuth"
         android:textAlignment="center"
@@ -78,7 +84,7 @@
         android:layout_weight="1"
         android:text="@string/blank"
         android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <TextView
         android:id="@+id/morningTwilightLabel"
@@ -96,7 +102,7 @@
         android:layout_weight="1"
         android:text="@string/blank"
         android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <TextView
         android:id="@+id/eveningTwilightLabel"
@@ -111,9 +117,10 @@
         android:id="@+id/eveningTwilightText"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginBottom="5sp"
         android:layout_weight="1"
         android:text="@string/blank"
         android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
 </LinearLayout>
