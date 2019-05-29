@@ -1,6 +1,9 @@
 package com.example.astroweather;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -10,15 +13,34 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity {
+    private final String PREF_FILE_NAME = "astroPreferences";
+    private final String PREF_LATITUDE_FIELD = "latitudeField";
+    private final String PREF_LONGITUDE_FIELD = "longitudeField";
+    private final String PREF_FREQUENCY_FIELD = "frequencyField";
+    private SharedPreferences preferences;
+
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd\nHH:mm:ss z");
     private FragmentPagerAdapter fragmentPagerAdapter;
     private final FragmentManager fm = getSupportFragmentManager();
     private Fragment moonInfoFragment;
     private Fragment sunInfoFragment;
     private boolean isTablet;
-    Button optionsBtn;
+
+    private Handler timeHandler;
+    private Runnable timeRunnable;
+
+    private TextView currentTimeTextView;
+    private TextView latitudeTextView;
+    private TextView longitudeTextView;
+    private TextView frequencyTextView;
+    private Button optionsBtn;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -42,19 +64,57 @@ public class MainActivity extends AppCompatActivity {
             vPager.setAdapter(fragmentPagerAdapter);
         }
 
+        currentTimeTextView = findViewById(R.id.timeText);
+        latitudeTextView = findViewById(R.id.latitudeText);
+        longitudeTextView = findViewById(R.id.longitudeText);
+        frequencyTextView = findViewById(R.id.frequencyText);
+
+        preferences = getSharedPreferences(PREF_FILE_NAME, Activity.MODE_PRIVATE);
+
+        latitudeTextView.setText(preferences.getString(PREF_LATITUDE_FIELD, ""));
+        longitudeTextView.setText(preferences.getString(PREF_LONGITUDE_FIELD, ""));
+        frequencyTextView.setText(preferences.getString(PREF_FREQUENCY_FIELD, ""));
+
         optionsBtn = findViewById(R.id.optionsButton);
         optionsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, OptionsActivity.class);
+                Intent intent = new Intent(getApplicationContext(), OptionsActivity.class);
                 startActivity(intent);
             }
         });
+
+        timeHandler = new Handler();
+
+        timeRunnable = new Runnable() {
+            @Override
+            public void run() {
+                String currentTime = simpleDateFormat.format(new Date());
+                currentTimeTextView.setText(currentTime);
+                Toast.makeText(getApplicationContext(), "timeRunnable", Toast.LENGTH_SHORT).show();
+                timeHandler.postDelayed(this, 1000);
+            }
+        };
+
+        //timeHandler.postDelayed(timeRunnable, 1000);
     }
 
     @Override
-    protected void onPostResume() {
-        super.onPostResume();
+    protected void onResume() {
+        super.onResume();
+        timeHandler.post(timeRunnable);
+        //timeHandler.postDelayed(timeRunnable, 1000);
+        latitudeTextView.setText(preferences.getString(PREF_LATITUDE_FIELD, ""));
+        longitudeTextView.setText(preferences.getString(PREF_LONGITUDE_FIELD, ""));
+        frequencyTextView.setText(preferences.getString(PREF_FREQUENCY_FIELD, ""));
         Toast.makeText(getApplicationContext(), "resumed", Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        timeHandler.removeCallbacks(timeRunnable);
+        Toast.makeText(getApplicationContext(), "paused", Toast.LENGTH_SHORT).show();
+    }
+
 }
