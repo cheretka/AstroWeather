@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView frequencyTextView;
     private Button optionsBtn;
 
-    private AstroCalculator.MoonInfo moonInfo;
     private MoonViewModel moonViewModel;
+    private SunViewModel sunViewModel;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         moonViewModel = ViewModelProviders.of(this).get(MoonViewModel.class);
+        sunViewModel = ViewModelProviders.of(this).get(SunViewModel.class);
 
         isTablet = getResources().getBoolean(R.bool.isTablet);
 
@@ -93,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), OptionsActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,1);
             }
         });
 
@@ -108,50 +109,61 @@ public class MainActivity extends AppCompatActivity {
                 handler.postDelayed(this, 1000);
             }
         };
+    }
 
-        //handler.post(sunAndMoonRunnable);
-        //handler.postDelayed(timeRunnable, 1000);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
+            latitudeTextView.setText(preferences.getString(PREF_LATITUDE_FIELD, ""));
+            longitudeTextView.setText(preferences.getString(PREF_LONGITUDE_FIELD, ""));
+            frequencyTextView.setText(preferences.getString(PREF_FREQUENCY_FIELD, ""));
+
+            sunAndMoonRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    String latitude = latitudeTextView.getText().toString();
+                    String longitude = longitudeTextView.getText().toString();
+                    String freq = frequencyTextView.getText().toString();
+
+                    if(!(TextUtils.isEmpty(latitude) || TextUtils.isEmpty(longitude) || TextUtils.isEmpty(freq))){
+                        Toast.makeText(getApplicationContext(), "sunAndMoonRunnable", Toast.LENGTH_SHORT).show();
+
+                        double lati = Double.valueOf(latitude);
+                        double longi = Double.valueOf(longitude);
+                        Calendar c = Calendar.getInstance();
+
+                        AstroDateTime astroDateTime = new AstroDateTime(c.get(Calendar.YEAR), c.get(Calendar.MONTH)+1,
+                                c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE),
+                                c.get(Calendar.SECOND),c.get(Calendar.ZONE_OFFSET)/3600_000,true);
+                        AstroCalculator astroCalculator = new AstroCalculator(astroDateTime, new AstroCalculator.Location(lati, longi));
+
+                        AstroCalculator.MoonInfo moonInfo = astroCalculator.getMoonInfo();
+                        AstroCalculator.SunInfo sunInfo = astroCalculator.getSunInfo();
+                        moonViewModel.setMoonInfo(moonInfo);
+                        sunViewModel.setSunInfo(sunInfo);
+                        if(isTablet){
+                            FragmentTransaction ft = fm.beginTransaction();
+
+                            moonInfoFragment = MoonInfoFragment.newInstance();
+                            ft.replace(R.id.fragment_container, moonInfoFragment);
+
+                            sunInfoFragment = SunInfoFragment.newInstance();
+                            ft.replace(R.id.fragment_container2, sunInfoFragment);
+                            ft.commit();
+                        } else {
+                            vp.getAdapter().notifyDataSetChanged();
+                        }
+                        handler.postDelayed(this,Integer.valueOf(freq)*1000);
+                    }
+                }
+            };
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        latitudeTextView.setText(preferences.getString(PREF_LATITUDE_FIELD, ""));
-        longitudeTextView.setText(preferences.getString(PREF_LONGITUDE_FIELD, ""));
-        frequencyTextView.setText(preferences.getString(PREF_FREQUENCY_FIELD, ""));
-
-        sunAndMoonRunnable = new Runnable() {
-            @Override
-            public void run() {
-                String latitude = latitudeTextView.getText().toString();
-                String longitude = longitudeTextView.getText().toString();
-                String freq = frequencyTextView.getText().toString();
-
-                if(!(TextUtils.isEmpty(latitude) || TextUtils.isEmpty(longitude) || TextUtils.isEmpty(freq))){
-                    Toast.makeText(getApplicationContext(), "sunAndMoonRunnable", Toast.LENGTH_SHORT).show();
-
-                    double lati = Double.valueOf(latitude);
-                    double longi = Double.valueOf(longitude);
-
-                    Calendar c = Calendar.getInstance();
-//                    AstroDateTime astroDateTime = new AstroDateTime(c.get(Calendar.YEAR), c.get(Calendar.MONTH)+1,
-//                            c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE),
-//                            c.get(Calendar.SECOND),c.get(Calendar.ZONE_OFFSET)/3600_000,true);
-
-                    AstroDateTime astroDateTime = new AstroDateTime(c.get(Calendar.YEAR), c.get(Calendar.MONTH)+1,
-                            c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE),
-                            c.get(Calendar.SECOND),c.get(Calendar.ZONE_OFFSET)/3600_000,true);
-                    AstroCalculator astroCalculator = new AstroCalculator(astroDateTime, new AstroCalculator.Location(lati, longi));
-                    //Toast.makeText(getApplicationContext(), astroCalculator.getDateTime().toString(), Toast.LENGTH_SHORT).show();
-                    //Toast.makeText(getApplicationContext(), getSupportFragmentManager().getFragments().get(0).toString(), Toast.LENGTH_SHORT).show();
-                    AstroCalculator.MoonInfo moonInfo = astroCalculator.getMoonInfo();
-                    moonViewModel.setMoonInfo(moonInfo);
-                    vp.getAdapter().notifyDataSetChanged();
-                    handler.postDelayed(this,Integer.valueOf(freq)*1000);
-                }
-            }
-        };
 
         handler.post(sunAndMoonRunnable);
         handler.post(timeRunnable);

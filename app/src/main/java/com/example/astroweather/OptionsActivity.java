@@ -1,6 +1,7 @@
 package com.example.astroweather;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -48,6 +49,9 @@ public class OptionsActivity extends AppCompatActivity {
                     preferencesEditor.putString(PREF_LONGITUDE_FIELD, longitudeEdit.getText().toString());
                     preferencesEditor.putString(PREF_FREQUENCY_FIELD, frequencyEdit.getText().toString());
                     preferencesEditor.commit();
+
+                    Intent returnIntent = new Intent();
+                    setResult(Activity.RESULT_OK, returnIntent);
                     finish();
                 }
             }
