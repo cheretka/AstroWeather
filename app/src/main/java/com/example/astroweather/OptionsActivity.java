@@ -73,6 +73,10 @@ public class OptionsActivity extends AppCompatActivity {
             Toast.makeText(this, "Longitude value must be between -180 and 180.", Toast.LENGTH_SHORT).show();
             return false;
         }
+        if(Integer.valueOf(freq)==0){
+            Toast.makeText(this, "Frequency value must be bigger than 0 [s].", Toast.LENGTH_SHORT).show();
+            return false;
+        }
         return true;
     }
 }

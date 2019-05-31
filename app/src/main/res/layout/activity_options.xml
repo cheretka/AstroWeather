@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:inputType="numberDecimal|numberSigned"
-        android:maxLength="6"
+        android:maxLength="8"
         android:padding="0sp"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:inputType="numberDecimal|numberSigned"
-        android:maxLength="6"
+        android:maxLength="8"
         android:padding="0sp"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />

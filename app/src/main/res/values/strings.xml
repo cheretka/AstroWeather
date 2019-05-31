@@ -5,7 +5,7 @@
     <string name="moonset">Moonset :</string>
     <string name="next_new_moon">Next new moon :</string>
     <string name="next_full_moon">Next full moon :</string>
-    <string name="moon_phase">Moon phase :</string>
+    <string name="moon_phase">Moon phase [%]:</string>
     <string name="synodic_day">Synodic day :</string>
     <string name="sunrise">Sunrise :</string>
     <string name="sunset">Sunset :</string>

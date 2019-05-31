@@ -24,4 +24,9 @@ public class InfoViewPager extends FragmentPagerAdapter {
             return MoonInfoFragment.newInstance();
         }
     }
+
+    @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
+    }
 }

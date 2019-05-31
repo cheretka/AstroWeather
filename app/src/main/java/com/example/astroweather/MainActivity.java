@@ -1,6 +1,7 @@
 package com.example.astroweather;
 
 import android.app.Activity;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
@@ -11,12 +12,17 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.astrocalculator.AstroCalculator;
+import com.astrocalculator.AstroDateTime;
+
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,12 +35,14 @@ public class MainActivity extends AppCompatActivity {
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd\nHH:mm:ss z");
     private FragmentPagerAdapter fragmentPagerAdapter;
     private final FragmentManager fm = getSupportFragmentManager();
+    private ViewPager vp;
     private Fragment moonInfoFragment;
     private Fragment sunInfoFragment;
     private boolean isTablet;
 
-    private Handler timeHandler;
+    private Handler handler;
     private Runnable timeRunnable;
+    private Runnable sunAndMoonRunnable;
 
     private TextView currentTimeTextView;
     private TextView latitudeTextView;
@@ -42,10 +50,15 @@ public class MainActivity extends AppCompatActivity {
     private TextView frequencyTextView;
     private Button optionsBtn;
 
+    private AstroCalculator.MoonInfo moonInfo;
+    private MoonViewModel moonViewModel;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        moonViewModel = ViewModelProviders.of(this).get(MoonViewModel.class);
 
         isTablet = getResources().getBoolean(R.bool.isTablet);
 
@@ -59,9 +72,9 @@ public class MainActivity extends AppCompatActivity {
             ft.replace(R.id.fragment_container2, sunInfoFragment);
             ft.commit();
         } else {
-            ViewPager vPager = findViewById(R.id.vp);
+            vp = findViewById(R.id.vp);
             fragmentPagerAdapter = new InfoViewPager(getSupportFragmentManager());
-            vPager.setAdapter(fragmentPagerAdapter);
+            vp.setAdapter(fragmentPagerAdapter);
         }
 
         currentTimeTextView = findViewById(R.id.timeText);
@@ -84,36 +97,73 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        timeHandler = new Handler();
+        handler = new Handler();
 
         timeRunnable = new Runnable() {
             @Override
             public void run() {
                 String currentTime = simpleDateFormat.format(new Date());
                 currentTimeTextView.setText(currentTime);
-                Toast.makeText(getApplicationContext(), "timeRunnable", Toast.LENGTH_SHORT).show();
-                timeHandler.postDelayed(this, 1000);
+                //Toast.makeText(getApplicationContext(), "timeRunnable", Toast.LENGTH_SHORT).show();
+                handler.postDelayed(this, 1000);
             }
         };
 
-        //timeHandler.postDelayed(timeRunnable, 1000);
+        //handler.post(sunAndMoonRunnable);
+        //handler.postDelayed(timeRunnable, 1000);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        timeHandler.post(timeRunnable);
-        //timeHandler.postDelayed(timeRunnable, 1000);
+
         latitudeTextView.setText(preferences.getString(PREF_LATITUDE_FIELD, ""));
         longitudeTextView.setText(preferences.getString(PREF_LONGITUDE_FIELD, ""));
         frequencyTextView.setText(preferences.getString(PREF_FREQUENCY_FIELD, ""));
+
+        sunAndMoonRunnable = new Runnable() {
+            @Override
+            public void run() {
+                String latitude = latitudeTextView.getText().toString();
+                String longitude = longitudeTextView.getText().toString();
+                String freq = frequencyTextView.getText().toString();
+
+                if(!(TextUtils.isEmpty(latitude) || TextUtils.isEmpty(longitude) || TextUtils.isEmpty(freq))){
+                    Toast.makeText(getApplicationContext(), "sunAndMoonRunnable", Toast.LENGTH_SHORT).show();
+
+                    double lati = Double.valueOf(latitude);
+                    double longi = Double.valueOf(longitude);
+
+                    Calendar c = Calendar.getInstance();
+//                    AstroDateTime astroDateTime = new AstroDateTime(c.get(Calendar.YEAR), c.get(Calendar.MONTH)+1,
+//                            c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE),
+//                            c.get(Calendar.SECOND),c.get(Calendar.ZONE_OFFSET)/3600_000,true);
+
+                    AstroDateTime astroDateTime = new AstroDateTime(c.get(Calendar.YEAR), c.get(Calendar.MONTH)+1,
+                            c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE),
+                            c.get(Calendar.SECOND),c.get(Calendar.ZONE_OFFSET)/3600_000,true);
+                    AstroCalculator astroCalculator = new AstroCalculator(astroDateTime, new AstroCalculator.Location(lati, longi));
+                    //Toast.makeText(getApplicationContext(), astroCalculator.getDateTime().toString(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), getSupportFragmentManager().getFragments().get(0).toString(), Toast.LENGTH_SHORT).show();
+                    AstroCalculator.MoonInfo moonInfo = astroCalculator.getMoonInfo();
+                    moonViewModel.setMoonInfo(moonInfo);
+                    vp.getAdapter().notifyDataSetChanged();
+                    handler.postDelayed(this,Integer.valueOf(freq)*1000);
+                }
+            }
+        };
+
+        handler.post(sunAndMoonRunnable);
+        handler.post(timeRunnable);
+
         Toast.makeText(getApplicationContext(), "resumed", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        timeHandler.removeCallbacks(timeRunnable);
+        handler.removeCallbacks(timeRunnable);
+        handler.removeCallbacks(sunAndMoonRunnable);
         Toast.makeText(getApplicationContext(), "paused", Toast.LENGTH_SHORT).show();
     }
 
