@@ -7,7 +7,7 @@ import com.astrocalculator.AstroCalculator;
 
 
 
-public class MyViewModel extends ViewModel {
+public class DataViewModel extends ViewModel {
 
     private AstroCalculator data;
     private AstroCalculator.SunInfo sunInfo;

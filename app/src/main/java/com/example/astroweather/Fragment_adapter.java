@@ -18,9 +18,9 @@ public class Fragment_adapter  extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if(position==0)
-            return Fragment_sun.newInstance();
+            return new Fragment_sun();
         else
-            return Fragment_moon.newInstance();
+            return new Fragment_moon();
     }
 
     @Override

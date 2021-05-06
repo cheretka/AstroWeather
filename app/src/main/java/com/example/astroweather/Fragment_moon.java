@@ -1,6 +1,7 @@
 package com.example.astroweather;
 
 
+import android.annotation.SuppressLint;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,36 +10,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.astrocalculator.AstroCalculator;
 import com.astrocalculator.AstroDateTime;
 
 import java.util.Calendar;
 
 public class Fragment_moon extends Fragment {
 
-    private MyViewModel moonViewModel;
+    private DataViewModel data;
 
-    private TextView moonriseText;
-    private TextView moonsetText;
-    private TextView newMoonText;
-    private TextView fullMoonText;
-    private TextView moonPhaseText;
-    private TextView synodicDayText;
+    private TextView moonriseText, moonsetText;
+    private TextView newMoonText, fullMoonText;
+    private TextView moonPhaseText, synodicDayText;
 
-    public static Fragment_moon newInstance() {
-        Fragment_moon fragment = new Fragment_moon();
-        return fragment;
+    public Fragment_moon() {
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        moonViewModel = ViewModelProviders.of(getActivity()).get(MyViewModel.class);
-
+        data = ViewModelProviders.of(getActivity()).get(DataViewModel.class);
         setRetainInstance(true);
     }
 
+
+    @SuppressLint("DefaultLocale")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -51,19 +47,19 @@ public class Fragment_moon extends Fragment {
         moonPhaseText = view.findViewById(R.id.moon_phase);
         synodicDayText = view.findViewById(R.id.moon_synodic);
 
-        AstroCalculator.MoonInfo moonInfo = moonViewModel.getMoonInfo();
-        if(moonInfo!=null){
 
-            moonriseText.setText(moonInfo.getMoonrise().toString());
-            moonsetText.setText(moonInfo.getMoonset().toString());
+        if(data.getMoonInfo()!=null){
+            moonriseText.setText(String.format("%d:%02d:%02d", data.getMoonInfo().getMoonrise().getHour(), data.getMoonInfo().getMoonrise().getMinute(), data.getMoonInfo().getMoonrise().getSecond()) );
+            moonsetText.setText(String.format("%d:%02d:%02d", data.getMoonInfo().getMoonset().getHour(), data.getMoonInfo().getMoonset().getMinute(), data.getMoonInfo().getMoonset().getSecond()) );
 
-            newMoonText.setText(moonInfo.getNextNewMoon().toString());
-            fullMoonText.setText(moonInfo.getNextFullMoon().toString());
+            newMoonText.setText(String.format("%02d/%02d/%04d", data.getMoonInfo().getNextNewMoon().getDay(),  data.getMoonInfo().getNextNewMoon().getMonth(), data.getMoonInfo().getNextNewMoon().getYear()));
+            fullMoonText.setText(String.format("%02d/%02d/%04d", data.getMoonInfo().getNextFullMoon().getDay(),  data.getMoonInfo().getNextFullMoon().getMonth(), data.getMoonInfo().getNextFullMoon().getYear()));
 
-            moonPhaseText.setText(String.valueOf(Math.round((moonInfo.getIllumination()*100))));
+            moonPhaseText.setText(String.format("%.02f%%", data.getMoonInfo().getIllumination()));
+
 
             Calendar today = Calendar.getInstance();
-            AstroDateTime nextNewMoon = moonInfo.getNextNewMoon();
+            AstroDateTime nextNewMoon = data.getMoonInfo().getNextNewMoon();
             Calendar newMoonCalendar = Calendar.getInstance();
             newMoonCalendar.set(nextNewMoon.getYear(), nextNewMoon.getMonth()-1, nextNewMoon.getDay(),today.get(Calendar.HOUR),today.get(Calendar.MINUTE), today.get(Calendar.SECOND));
             int synodicDay = (int)((newMoonCalendar.getTimeInMillis()-today.getTimeInMillis())/ (24 * 60 * 60 * 1000));
@@ -72,6 +68,5 @@ public class Fragment_moon extends Fragment {
         }
 
         return view;
-
     }
 }

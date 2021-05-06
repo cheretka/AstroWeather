@@ -36,7 +36,8 @@
             android:id="@+id/moon_rise"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:text="---"/>
     </LinearLayout>
 
 
@@ -57,7 +58,8 @@
             android:id="@+id/moon_set"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:text="---"/>
     </LinearLayout>
 
 
@@ -78,7 +80,8 @@
             android:id="@+id/moon_new"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:text="---"/>
     </LinearLayout>
 
     <LinearLayout
@@ -98,7 +101,8 @@
             android:id="@+id/moon_full"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:text="---"/>
     </LinearLayout>
 
     <LinearLayout
@@ -118,7 +122,8 @@
             android:id="@+id/moon_phase"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:text="---"/>
     </LinearLayout>
 
     <LinearLayout
@@ -138,7 +143,8 @@
             android:id="@+id/moon_synodic"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:text="---"/>
     </LinearLayout>
 
     <Space

@@ -3,79 +3,109 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="#C3E0FF"
+    android:orientation="vertical"
+    android:paddingHorizontal="50dp"
+    tools:context=".SettingsActivity">
+
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
 
     <TextView
-        android:id="@+id/latitudeLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:padding="0sp"
-        android:text="Latitude : "
+        android:layout_weight="0"
+        android:text="Ustawienia  \n"
         android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        android:textSize="30sp"
+        android:textStyle="bold" />
 
-    <EditText
-        android:id="@+id/latitudeEdit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:inputType="numberDecimal|numberSigned"
-        android:maxLength="8"
-        android:padding="0sp"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
-    <TextView
-        android:id="@+id/longitudeLabel"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:padding="0sp"
-        android:text="Longitude :"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        android:layout_weight="0"
+        android:orientation="horizontal">
 
-    <EditText
-        android:id="@+id/longitudeEdit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:inputType="numberDecimal|numberSigned"
-        android:maxLength="8"
-        android:padding="0sp"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="szerokość geogr.\n(-90; 90)"
+            android:textAlignment="center" />
 
-    <TextView
-        android:id="@+id/frequencyLabel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:padding="0sp"
-        android:text="Refresh frequency [s] :"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        <EditText
+            android:id="@+id/szerokosc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:inputType="numberDecimal|numberSigned"
+            android:textAlignment="center" />
 
-    <EditText
-        android:id="@+id/frequencyEdit"
+    </LinearLayout>
+
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:inputType="number"
-        android:maxLength="4"
-        android:padding="0sp"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        android:layout_weight="0"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="długość geogr.\n(-180; 180)"
+            android:textAlignment="center" />
+
+        <EditText
+            android:id="@+id/dlugosc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:inputType="numberDecimal|numberSigned"
+            android:textAlignment="center" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Czas odswierzania\nw sekundach\n(1; 900)"
+            android:textAlignment="center" />
+
+        <EditText
+            android:id="@+id/czestotliwosc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:inputType="number"
+            android:textAlignment="center" />
+    </LinearLayout>
+
 
     <Button
-        android:id="@+id/okBtn"
+        android:id="@+id/save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:padding="0sp"
-        android:text="Ok"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        android:layout_margin="20dp"
+        android:background="#FAFAFA"
+        android:onClick="funSaveNewData"
+        android:text="Zapisz" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
 
 </LinearLayout>

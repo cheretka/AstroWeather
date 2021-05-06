@@ -9,29 +9,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.astrocalculator.AstroCalculator;
-
 public class Fragment_sun extends Fragment {
 
-    private MyViewModel data;
+    private DataViewModel data;
 
-    private TextView sunriseTextView;
-    private TextView sunsetTextView;
-    private TextView sunriseAzimuthTextView;
-    private TextView sunsetAzimuthTextView;
-    private TextView morningTwilightTextView;
-    private TextView eveningTwilightTextView;
+    private TextView sunriseTimeText, sunriseAzimuthText;
+    private TextView sunsetTimeText, sunsetAzimuthText;
+    private TextView sunMorTwilightText, sunEvenTwilightText;
 
-
-    public static Fragment_sun newInstance() {
-        Fragment_sun fragment = new Fragment_sun();
-        return fragment;
+    public Fragment_sun() {
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        data = ViewModelProviders.of(getActivity()).get(MyViewModel.class);
+        data = ViewModelProviders.of(getActivity()).get(DataViewModel.class);
         setRetainInstance(true);
     }
 
@@ -40,24 +33,23 @@ public class Fragment_sun extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.sun_info_fragment, container, false);
-
-        sunriseTextView = view.findViewById(R.id.sunriseTimeText);
-        sunsetTextView = view.findViewById(R.id.sunsetTimeText);
-        sunriseAzimuthTextView = view.findViewById(R.id.sunriseAzimuthText);
-        sunsetAzimuthTextView = view.findViewById(R.id.sunsetAzimuthText);
-        morningTwilightTextView = view.findViewById(R.id.morningTwilightText);
-        eveningTwilightTextView = view.findViewById(R.id.eveningTwilightText);
+        sunriseTimeText = view.findViewById(R.id.sunriseTimeText);
+        sunriseAzimuthText = view.findViewById(R.id.sunriseAzimuthText);
+        sunsetTimeText = view.findViewById(R.id.sunsetTimeText);
+        sunsetAzimuthText = view.findViewById(R.id.sunsetAzimuthText);
+        sunMorTwilightText = view.findViewById(R.id.morningTwilightText);
+        sunEvenTwilightText = view.findViewById(R.id.eveningTwilightText);
 
 
         if(data.getSunInfo()!=null){
-            sunriseTextView.setText( String.format("%d:%02d:%02d", data.getSunInfo().getSunrise().getHour(), data.getSunInfo().getSunrise().getMinute(), data.getSunInfo().getSunrise().getSecond()) );
-            sunriseAzimuthTextView.setText(  String.format("%.04f", data.getSunInfo().getAzimuthRise() ));
+            sunriseTimeText.setText( String.format("%d:%02d:%02d", data.getSunInfo().getSunrise().getHour(), data.getSunInfo().getSunrise().getMinute(), data.getSunInfo().getSunrise().getSecond()) );
+            sunriseAzimuthText.setText(  String.format("%.06f", data.getSunInfo().getAzimuthRise() ));
 
-            sunsetTextView.setText(  String.format("%d:%02d:%02d", data.getSunInfo().getSunset().getHour(), data.getSunInfo().getSunset().getMinute(), data.getSunInfo().getSunset().getSecond()));
-            sunsetAzimuthTextView.setText(String.format("%.04f", data.getSunInfo().getAzimuthSet() ));
+            sunsetTimeText.setText(  String.format("%d:%02d:%02d", data.getSunInfo().getSunset().getHour(), data.getSunInfo().getSunset().getMinute(), data.getSunInfo().getSunset().getSecond()));
+            sunsetAzimuthText.setText(String.format("%.06f", data.getSunInfo().getAzimuthSet() ));
 
-            morningTwilightTextView.setText( String.format("%d:%02d:%02d", data.getSunInfo().getTwilightMorning().getHour(), data.getSunInfo().getTwilightMorning().getMinute(), data.getSunInfo().getTwilightMorning().getSecond()));
-            eveningTwilightTextView.setText( String.format("%d:%02d:%02d", data.getSunInfo().getTwilightEvening().getHour(), data.getSunInfo().getTwilightEvening().getMinute(), data.getSunInfo().getTwilightEvening().getSecond()));
+            sunMorTwilightText.setText( String.format("%d:%02d:%02d", data.getSunInfo().getTwilightMorning().getHour(), data.getSunInfo().getTwilightMorning().getMinute(), data.getSunInfo().getTwilightMorning().getSecond()));
+            sunEvenTwilightText.setText( String.format("%d:%02d:%02d", data.getSunInfo().getTwilightEvening().getHour(), data.getSunInfo().getTwilightEvening().getMinute(), data.getSunInfo().getTwilightEvening().getSecond()));
         }
 
         return view;
