@@ -1,8 +1,6 @@
 package com.example.astroweather;
 
-
 import android.arch.lifecycle.ViewModel;
-
 import com.astrocalculator.AstroCalculator;
 
 

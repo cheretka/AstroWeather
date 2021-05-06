@@ -10,9 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.astrocalculator.AstroDateTime;
 
-import java.util.Calendar;
+
 
 public class Fragment_moon extends Fragment {
 

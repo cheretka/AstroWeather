@@ -2,7 +2,6 @@ package com.example.astroweather;
 
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -15,13 +14,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-
 import com.astrocalculator.AstroCalculator;
 import com.astrocalculator.AstroDateTime;
-
-import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Objects;
+
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,8 +35,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView czestotliwosc_text;
     private DataViewModel dataViewModel;
 
-    private Fragment ksiezyc_fragment;
-    private Fragment slonce_fragment;
 
 
     @Override
@@ -52,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
         dataViewModel = ViewModelProviders.of(this).get(DataViewModel.class);
 
-        fileWithDataInformation = getSharedPreferences("saveddata", Activity.MODE_PRIVATE);
+        fileWithDataInformation = getSharedPreferences("saveddata6", Activity.MODE_PRIVATE);
         setDataOnScreen();
 
 
