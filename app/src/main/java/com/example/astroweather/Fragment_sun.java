@@ -33,10 +33,13 @@ public class Fragment_sun extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.sun_info_fragment, container, false);
+
         sunriseTimeText = view.findViewById(R.id.sunriseTimeText);
         sunriseAzimuthText = view.findViewById(R.id.sunriseAzimuthText);
+
         sunsetTimeText = view.findViewById(R.id.sunsetTimeText);
         sunsetAzimuthText = view.findViewById(R.id.sunsetAzimuthText);
+
         sunMorTwilightText = view.findViewById(R.id.morningTwilightText);
         sunEvenTwilightText = view.findViewById(R.id.eveningTwilightText);
 

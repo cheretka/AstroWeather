@@ -9,7 +9,6 @@ import com.astrocalculator.AstroCalculator;
 
 public class DataViewModel extends ViewModel {
 
-    private AstroCalculator data;
     private AstroCalculator.SunInfo sunInfo;
     private AstroCalculator.MoonInfo moonInfo;
 
@@ -27,11 +26,4 @@ public class DataViewModel extends ViewModel {
         this.moonInfo = moonInfo;
     }
 
-    public AstroCalculator getData() {
-        return data;
-    }
-
-    public void setData(AstroCalculator data) {
-        this.data = data;
-    }
 }

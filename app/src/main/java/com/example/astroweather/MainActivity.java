@@ -5,40 +5,31 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.astrocalculator.AstroCalculator;
 import com.astrocalculator.AstroDateTime;
 
 import java.util.Calendar;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
-
-    private SharedPreferences preferences;
-    private FragmentPagerAdapter fragmentPagerAdapter;
-
-
+    private SharedPreferences fileWithDataInformation;
     private ViewPager viewPager;
 //    private boolean isTablet;
 
     private Handler handler;
     private Runnable sunAndMoonRunnable;
 
-    private TextView latitudeTextView;
-    private TextView longitudeTextView;
-    private TextView frequencyTextView;
-
-
-    private DataViewModel moonViewModel;
-    private DataViewModel sunViewModel;
+    private TextView szerokosc_text;
+    private TextView dlugosc_text;
+    private TextView czestotliwosc_text;
+    private DataViewModel dataViewModel;
 
 
     @Override
@@ -46,8 +37,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        moonViewModel = ViewModelProviders.of(this).get(DataViewModel.class);
-        sunViewModel = ViewModelProviders.of(this).get(DataViewModel.class);
+        szerokosc_text = findViewById(R.id.szerokosc_main);
+        dlugosc_text = findViewById(R.id.dlugosc_main);
+        czestotliwosc_text = findViewById(R.id.czestotliwosc_main);
+
+        dataViewModel = ViewModelProviders.of(this).get(DataViewModel.class);
+
+        fileWithDataInformation = getSharedPreferences("saved data1", Activity.MODE_PRIVATE);
+        setDataToText();
 
 //        isTablet = getResources().getBoolean(R.bool.isTablet);
 //        if(isTablet){
@@ -61,56 +58,44 @@ public class MainActivity extends AppCompatActivity {
 //            ft.commit();
 //        } else {
         viewPager = findViewById(R.id.view_pager);
-        viewPager.setAdapter(new Fragment_adapter(getSupportFragmentManager()));
+        viewPager.setAdapter(new Adapter(getSupportFragmentManager()));
 //        }
-
-
-        latitudeTextView = findViewById(R.id.latitudeText);
-        longitudeTextView = findViewById(R.id.longitudeText);
-        frequencyTextView = findViewById(R.id.frequencyText);
-
-        preferences = getSharedPreferences("saved data", Activity.MODE_PRIVATE);
-        latitudeTextView.setText(preferences.getString("szerokosc geograficzna", "51"));
-        longitudeTextView.setText(preferences.getString("dlugosc geograficzna", "19"));
-        frequencyTextView.setText(preferences.getString("czas odswierzania", "15"));
 
 
         handler = new Handler();
 
+//        Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+//        startActivityForResult(intent,1);
     }
+
+
+    void setDataToText(){
+        szerokosc_text.setText(fileWithDataInformation.getString("szerokosc geograficzna", "0"));
+        dlugosc_text.setText(fileWithDataInformation.getString("dlugosc geograficzna", "0"));
+        czestotliwosc_text.setText(fileWithDataInformation.getString("czas odswierzania", "60"));
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
 
-            latitudeTextView.setText(preferences.getString("szerokosc geograficzna", "51"));
-            longitudeTextView.setText(preferences.getString("dlugosc geograficzna", "19"));
-            frequencyTextView.setText(preferences.getString("czas odswierzania", "15"));
+            setDataToText();
 
             sunAndMoonRunnable = new Runnable() {
                 @Override
                 public void run() {
-                    String latitude = latitudeTextView.getText().toString();
-                    String longitude = longitudeTextView.getText().toString();
-                    String freq = frequencyTextView.getText().toString();
 
-                    if(!(TextUtils.isEmpty(latitude) || TextUtils.isEmpty(longitude) || TextUtils.isEmpty(freq))){
-                        Toast.makeText(getApplicationContext(), "sunAndMoonRunnable", Toast.LENGTH_SHORT).show();
+                    double szerokosc = Double.parseDouble(szerokosc_text.getText().toString());
+                    double dlugosc = Double.parseDouble(dlugosc_text.getText().toString());
 
-                        double lati = Double.valueOf(latitude);
-                        double longi = Double.valueOf(longitude);
-                        Calendar c = Calendar.getInstance();
+                    Calendar cal = Calendar.getInstance();
+                    AstroCalculator astroCalculator = new AstroCalculator(
+                            new AstroDateTime(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)+1, cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), cal.get(Calendar.SECOND),cal.get(Calendar.ZONE_OFFSET)/3600_000,true),
+                            new AstroCalculator.Location(szerokosc, dlugosc));
 
-                        AstroDateTime astroDateTime = new AstroDateTime(c.get(Calendar.YEAR), c.get(Calendar.MONTH)+1,
-                                c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE),
-                                c.get(Calendar.SECOND),c.get(Calendar.ZONE_OFFSET)/3600_000,true);
-                        AstroCalculator astroCalculator = new AstroCalculator(astroDateTime, new AstroCalculator.Location(lati, longi));
-
-                        AstroCalculator.MoonInfo moonInfo = astroCalculator.getMoonInfo();
-                        AstroCalculator.SunInfo sunInfo = astroCalculator.getSunInfo();
-                        moonViewModel.setMoonInfo(moonInfo);
-                        sunViewModel.setSunInfo(sunInfo);
+                    dataViewModel.setMoonInfo(astroCalculator.getMoonInfo());
+                    dataViewModel.setSunInfo(astroCalculator.getSunInfo());
 
 
 //                        if(isTablet){
@@ -123,10 +108,9 @@ public class MainActivity extends AppCompatActivity {
 //                            ft.replace(R.id.fragment_container2, sunInfoFragment);
 //                            ft.commit();
 //                        } else {
-                        viewPager.getAdapter().notifyDataSetChanged();
+                    Objects.requireNonNull(viewPager.getAdapter()).notifyDataSetChanged();
 //                        }
-                        handler.postDelayed(this,Integer.valueOf(freq)*1000);
-                    }
+                    handler.postDelayed(this,Integer.parseInt(czestotliwosc_text.getText().toString())*1000);
                 }
             };
         }
@@ -136,14 +120,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         handler.post(sunAndMoonRunnable);
-        Toast.makeText(getApplicationContext(), "resumed", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         handler.removeCallbacks(sunAndMoonRunnable);
-        Toast.makeText(getApplicationContext(), "paused", Toast.LENGTH_SHORT).show();
     }
 
     public void funUstawienia(View view) {

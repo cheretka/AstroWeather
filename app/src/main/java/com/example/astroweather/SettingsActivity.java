@@ -30,40 +30,47 @@ public class SettingsActivity extends AppCompatActivity {
         longitude_text = findViewById(R.id.dlugosc);
         frequency_text = findViewById(R.id.czestotliwosc);
 
-        fileWithDataInformation = getSharedPreferences("saved data", Activity.MODE_PRIVATE);
+        fileWithDataInformation = getSharedPreferences("saved data1", Activity.MODE_PRIVATE);
         latitude_text.setText(fileWithDataInformation.getString("szerokosc geograficzna", "0"));
         longitude_text.setText(fileWithDataInformation.getString("dlugosc geograficzna", "0"));
-        frequency_text.setText(fileWithDataInformation.getString("czas odświerzania", "60"));
+        frequency_text.setText(fileWithDataInformation.getString("czas odswierzania", "60"));
     }
 
 
 
-    @SuppressLint("CommitPrefEdits")
-    public void funSaveNewData(View view) {
 
+    public void funSaveNewData(View view) {
+        if(ifAllInfoGood()){
+            SharedPreferences.Editor preferencesEditor = fileWithDataInformation.edit();
+            preferencesEditor.putString("szerokosc geograficzna", latitude_text.getText().toString());
+            preferencesEditor.putString("dlugosc geograficzna", longitude_text.getText().toString());
+            preferencesEditor.putString("czas odswierzania", frequency_text.getText().toString());
+            preferencesEditor.apply();
+
+            Intent returnIntent = new Intent();
+            setResult(Activity.RESULT_OK, returnIntent);
+            finish();
+        }
+    }
+
+
+
+    boolean ifAllInfoGood(){
         String text_szerokosc = latitude_text.getText().toString();
         String text_dlugosc = longitude_text.getText().toString();
         String text_czestotliwosc = frequency_text.getText().toString();
 
         if (TextUtils.isEmpty(text_szerokosc) || TextUtils.isEmpty(text_dlugosc) || TextUtils.isEmpty(text_czestotliwosc) || Integer.parseInt(text_czestotliwosc)<1 || Integer.parseInt(text_czestotliwosc)>900){
             Toast.makeText(this, "prosze poprawić dane wejściowe", Toast.LENGTH_SHORT).show();
-            return;
+            return false;
         }
         BigDecimal szerokosc = new BigDecimal(text_szerokosc);
         BigDecimal dlugosc = new BigDecimal(text_dlugosc);
         if(szerokosc.compareTo(BigDecimal.valueOf(90)) > 0 || szerokosc.compareTo(BigDecimal.valueOf(-90)) < 0 || dlugosc.compareTo(BigDecimal.valueOf(180)) > 0 || dlugosc.compareTo(BigDecimal.valueOf(-180)) < 0){
             Toast.makeText(this, "prosze poprawić dane wejściowe", Toast.LENGTH_SHORT).show();
-            return;
+            return false;
         }
 
-
-        fileWithDataInformation.edit().putString("szerokosc geograficzna", latitude_text.getText().toString());
-        fileWithDataInformation.edit().putString("dlugosc geograficzna", longitude_text.getText().toString());
-        fileWithDataInformation.edit().putString("czas odswierzania", frequency_text.getText().toString());
-        fileWithDataInformation.edit().apply();
-
-        setResult(Activity.RESULT_OK, new Intent());
-        finish();
+        return true;
     }
-
 }

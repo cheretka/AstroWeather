@@ -9,7 +9,7 @@
     android:background="#C3E0FF"
     tools:context=".MainActivity">
 
-    
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,14 +26,13 @@
             android:text="Ustawienia" />
 
         <TextClock
-            android:id="@+id/clock"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:format12Hour="hh:mm:ss"
             android:paddingBottom="20dp"
             android:textAlignment="center"
-            android:textSize="30sp" />
+            android:textSize="40sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -49,10 +48,10 @@
                 android:text="szerokość geogr." />
 
             <TextView
-                android:id="@+id/latitudeText"
+                android:id="@+id/szerokosc_main"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1" />
+                android:layout_weight="2" />
         </LinearLayout>
 
         <LinearLayout
@@ -69,10 +68,10 @@
                 android:text="długość geogr." />
 
             <TextView
-                android:id="@+id/longitudeText"
+                android:id="@+id/dlugosc_main"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1" />
+                android:layout_weight="2" />
         </LinearLayout>
 
         <LinearLayout
@@ -89,10 +88,10 @@
                 android:text="Czas odswierzania" />
 
             <TextView
-                android:id="@+id/frequencyText"
+                android:id="@+id/czestotliwosc_main"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1" />
+                android:layout_weight="2" />
         </LinearLayout>
 
     </LinearLayout>
