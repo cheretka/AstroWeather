@@ -43,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
 
         dataViewModel = ViewModelProviders.of(this).get(DataViewModel.class);
 
-        fileWithDataInformation = getSharedPreferences("saved data1", Activity.MODE_PRIVATE);
-        setDataToText();
+        fileWithDataInformation = getSharedPreferences("saved data2", Activity.MODE_PRIVATE);
+        setDataOnScreen();
 
 //        isTablet = getResources().getBoolean(R.bool.isTablet);
 //        if(isTablet){
@@ -69,10 +69,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    void setDataToText(){
-        szerokosc_text.setText(fileWithDataInformation.getString("szerokosc geograficzna", "0"));
-        dlugosc_text.setText(fileWithDataInformation.getString("dlugosc geograficzna", "0"));
-        czestotliwosc_text.setText(fileWithDataInformation.getString("czas odswierzania", "60"));
+    void setDataOnScreen(){
+        szerokosc_text.setText(fileWithDataInformation.getString("szerokosc geograficzna", "---"));
+        dlugosc_text.setText(fileWithDataInformation.getString("dlugosc geograficzna", "---"));
+        czestotliwosc_text.setText(fileWithDataInformation.getString("czas odswierzania", "---"));
     }
 
 
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
 
-            setDataToText();
+            setDataOnScreen();
 
             sunAndMoonRunnable = new Runnable() {
                 @Override
@@ -110,6 +110,8 @@ public class MainActivity extends AppCompatActivity {
 //                        } else {
                     Objects.requireNonNull(viewPager.getAdapter()).notifyDataSetChanged();
 //                        }
+
+
                     handler.postDelayed(this,Integer.parseInt(czestotliwosc_text.getText().toString())*1000);
                 }
             };

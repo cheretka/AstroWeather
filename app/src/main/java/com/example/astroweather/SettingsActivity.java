@@ -30,7 +30,7 @@ public class SettingsActivity extends AppCompatActivity {
         longitude_text = findViewById(R.id.dlugosc);
         frequency_text = findViewById(R.id.czestotliwosc);
 
-        fileWithDataInformation = getSharedPreferences("saved data1", Activity.MODE_PRIVATE);
+        fileWithDataInformation = getSharedPreferences("saved data2", Activity.MODE_PRIVATE);
         latitude_text.setText(fileWithDataInformation.getString("szerokosc geograficzna", "0"));
         longitude_text.setText(fileWithDataInformation.getString("dlugosc geograficzna", "0"));
         frequency_text.setText(fileWithDataInformation.getString("czas odswierzania", "60"));
