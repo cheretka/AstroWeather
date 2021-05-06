@@ -4,10 +4,7 @@ import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Handler;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -26,10 +23,8 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences fileWithDataInformation;
     private ViewPager viewPager;
     private boolean isTablet;
-
     private Handler handler;
-    private Runnable sunAndMoonRunnable;
-
+    private Runnable refreshDateThread;
     private TextView szerokosc_text;
     private TextView dlugosc_text;
     private TextView czestotliwosc_text;
@@ -84,18 +79,15 @@ public class MainActivity extends AppCompatActivity {
 
             setDataOnScreen();
 
-            sunAndMoonRunnable = new Runnable() {
-                @RequiresApi(api = Build.VERSION_CODES.O)
+            refreshDateThread = new Runnable() {
+
                 @Override
                 public void run() {
-
-                    double szerokosc = Double.parseDouble(szerokosc_text.getText().toString());
-                    double dlugosc = Double.parseDouble(dlugosc_text.getText().toString());
 
                     Calendar cal = Calendar.getInstance();
                     AstroCalculator astroCalculator = new AstroCalculator(
                             new AstroDateTime(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)+1, cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), cal.get(Calendar.SECOND),cal.get(Calendar.ZONE_OFFSET)/3600_000,true),
-                            new AstroCalculator.Location(szerokosc, dlugosc));
+                            new AstroCalculator.Location( Double.parseDouble(szerokosc_text.getText().toString()), Double.parseDouble(dlugosc_text.getText().toString())));
 
                     dataViewModel.setAstroCal(astroCalculator);
 
@@ -109,28 +101,31 @@ public class MainActivity extends AppCompatActivity {
                         Objects.requireNonNull(viewPager.getAdapter()).notifyDataSetChanged();
                     }
 
-                    handler.postDelayed(this,Integer.parseInt(czestotliwosc_text.getText().toString())*1000);
+
+                    handler.postDelayed(this,Integer.parseInt(czestotliwosc_text.getText().toString())*1000 );
                 }
             };
-
 
 
         }
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
-        handler.post(sunAndMoonRunnable);
+        handler.post(refreshDateThread);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        handler.removeCallbacks(sunAndMoonRunnable);
+        handler.removeCallbacks(refreshDateThread);
     }
 
+
     public void funUstawienia(View view) {
+
         Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
         startActivityForResult(intent,1);
     }
