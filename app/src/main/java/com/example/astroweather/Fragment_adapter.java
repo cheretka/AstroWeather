@@ -3,11 +3,10 @@ package com.example.astroweather;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.util.Log;
 
-public class InfoViewPager extends FragmentPagerAdapter {
+public class Fragment_adapter  extends FragmentPagerAdapter {
 
-    public InfoViewPager (FragmentManager fragmentManager) {
+    public Fragment_adapter (FragmentManager fragmentManager) {
         super(fragmentManager);
     }
 
@@ -18,11 +17,10 @@ public class InfoViewPager extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        if(position==0){
-            return SunInfoFragment.newInstance();
-        } else {
-            return MoonInfoFragment.newInstance();
-        }
+        if(position==0)
+            return Fragment_sun.newInstance();
+        else
+            return Fragment_moon.newInstance();
     }
 
     @Override

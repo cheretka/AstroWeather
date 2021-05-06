@@ -36,49 +36,46 @@ public class MainActivity extends AppCompatActivity {
     private FragmentPagerAdapter fragmentPagerAdapter;
     private final FragmentManager fm = getSupportFragmentManager();
     private ViewPager vp;
-    private Fragment moonInfoFragment;
-    private Fragment sunInfoFragment;
-    private boolean isTablet;
+//    private boolean isTablet;
 
     private Handler handler;
     private Runnable timeRunnable;
     private Runnable sunAndMoonRunnable;
 
-    private TextView currentTimeTextView;
+    //    private TextView currentTimeTextView;
     private TextView latitudeTextView;
     private TextView longitudeTextView;
     private TextView frequencyTextView;
     private Button optionsBtn;
 
-    private MoonViewModel moonViewModel;
-    private SunViewModel sunViewModel;
+    private MyViewModel moonViewModel;
+    private MyViewModel sunViewModel;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        moonViewModel = ViewModelProviders.of(this).get(MoonViewModel.class);
-        sunViewModel = ViewModelProviders.of(this).get(SunViewModel.class);
+        moonViewModel = ViewModelProviders.of(this).get(MyViewModel.class);
+        sunViewModel = ViewModelProviders.of(this).get(MyViewModel.class);
 
-        isTablet = getResources().getBoolean(R.bool.isTablet);
+//        isTablet = getResources().getBoolean(R.bool.isTablet);
+//        if(isTablet){
+//            FragmentTransaction ft = this.fm.beginTransaction();
+//
+//            moonInfoFragment = MoonInfoFragment.newInstance();
+//            ft.replace(R.id.fragment_container, moonInfoFragment);
+//
+//            sunInfoFragment = SunInfoFragment.newInstance();
+//            ft.replace(R.id.fragment_container2, sunInfoFragment);
+//            ft.commit();
+//        } else {
+        vp = findViewById(R.id.vp);
+        fragmentPagerAdapter = new Fragment_adapter(getSupportFragmentManager());
+        vp.setAdapter(fragmentPagerAdapter);
+//        }
 
-        if(isTablet){
-            FragmentTransaction ft = this.fm.beginTransaction();
-
-            moonInfoFragment = MoonInfoFragment.newInstance();
-            ft.replace(R.id.fragment_container, moonInfoFragment);
-
-            sunInfoFragment = SunInfoFragment.newInstance();
-            ft.replace(R.id.fragment_container2, sunInfoFragment);
-            ft.commit();
-        } else {
-            vp = findViewById(R.id.vp);
-            fragmentPagerAdapter = new InfoViewPager(getSupportFragmentManager());
-            vp.setAdapter(fragmentPagerAdapter);
-        }
-
-        currentTimeTextView = findViewById(R.id.timeText);
+//        currentTimeTextView = findViewById(R.id.timeText);
         latitudeTextView = findViewById(R.id.latitudeText);
         longitudeTextView = findViewById(R.id.longitudeText);
         frequencyTextView = findViewById(R.id.frequencyText);
@@ -89,6 +86,9 @@ public class MainActivity extends AppCompatActivity {
         longitudeTextView.setText(preferences.getString(PREF_LONGITUDE_FIELD, ""));
         frequencyTextView.setText(preferences.getString(PREF_FREQUENCY_FIELD, ""));
 
+
+
+
         optionsBtn = findViewById(R.id.optionsButton);
         optionsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,17 +98,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
         handler = new Handler();
 
-        timeRunnable = new Runnable() {
-            @Override
-            public void run() {
-                String currentTime = simpleDateFormat.format(new Date());
-                currentTimeTextView.setText(currentTime);
-                //Toast.makeText(getApplicationContext(), "timeRunnable", Toast.LENGTH_SHORT).show();
-                handler.postDelayed(this, 1000);
-            }
-        };
+//        timeRunnable = new Runnable() {
+//            @Override
+//            public void run() {
+//                String currentTime = simpleDateFormat.format(new Date());
+//                currentTimeTextView.setText(currentTime);
+//                //Toast.makeText(getApplicationContext(), "timeRunnable", Toast.LENGTH_SHORT).show();
+//                handler.postDelayed(this, 1000);
+//            }
+//        };
+
+
     }
 
     @Override
@@ -142,18 +146,18 @@ public class MainActivity extends AppCompatActivity {
                         AstroCalculator.SunInfo sunInfo = astroCalculator.getSunInfo();
                         moonViewModel.setMoonInfo(moonInfo);
                         sunViewModel.setSunInfo(sunInfo);
-                        if(isTablet){
-                            FragmentTransaction ft = fm.beginTransaction();
-
-                            moonInfoFragment = MoonInfoFragment.newInstance();
-                            ft.replace(R.id.fragment_container, moonInfoFragment);
-
-                            sunInfoFragment = SunInfoFragment.newInstance();
-                            ft.replace(R.id.fragment_container2, sunInfoFragment);
-                            ft.commit();
-                        } else {
-                            vp.getAdapter().notifyDataSetChanged();
-                        }
+//                        if(isTablet){
+//                            FragmentTransaction ft = fm.beginTransaction();
+//
+//                            moonInfoFragment = MoonInfoFragment.newInstance();
+//                            ft.replace(R.id.fragment_container, moonInfoFragment);
+//
+//                            sunInfoFragment = SunInfoFragment.newInstance();
+//                            ft.replace(R.id.fragment_container2, sunInfoFragment);
+//                            ft.commit();
+//                        } else {
+                        vp.getAdapter().notifyDataSetChanged();
+//                        }
                         handler.postDelayed(this,Integer.valueOf(freq)*1000);
                     }
                 }
@@ -166,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         handler.post(sunAndMoonRunnable);
-        handler.post(timeRunnable);
+//        handler.post(timeRunnable);
 
         Toast.makeText(getApplicationContext(), "resumed", Toast.LENGTH_SHORT).show();
     }
@@ -174,9 +178,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        handler.removeCallbacks(timeRunnable);
+//        handler.removeCallbacks(timeRunnable);
         handler.removeCallbacks(sunAndMoonRunnable);
         Toast.makeText(getApplicationContext(), "paused", Toast.LENGTH_SHORT).show();
     }
 
 }
+
