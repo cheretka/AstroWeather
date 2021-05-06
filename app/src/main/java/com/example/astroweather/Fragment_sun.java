@@ -13,13 +13,8 @@ public class Fragment_sun extends Fragment {
 
     private DataViewModel data;
 
-    private TextView sunriseTimeText, sunriseAzimuthText;
-    private TextView sunsetTimeText, sunsetAzimuthText;
-    private TextView sunMorTwilightText, sunEvenTwilightText;
-
     public Fragment_sun() {
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,14 +29,14 @@ public class Fragment_sun extends Fragment {
 
         View view = inflater.inflate(R.layout.sun_info_fragment, container, false);
 
-        sunriseTimeText = view.findViewById(R.id.sunriseTimeText);
-        sunriseAzimuthText = view.findViewById(R.id.sunriseAzimuthText);
+        TextView sunriseTimeText = view.findViewById(R.id.sunriseTimeText);
+        TextView sunriseAzimuthText = view.findViewById(R.id.sunriseAzimuthText);
 
-        sunsetTimeText = view.findViewById(R.id.sunsetTimeText);
-        sunsetAzimuthText = view.findViewById(R.id.sunsetAzimuthText);
+        TextView sunsetTimeText = view.findViewById(R.id.sunsetTimeText);
+        TextView sunsetAzimuthText = view.findViewById(R.id.sunsetAzimuthText);
 
-        sunMorTwilightText = view.findViewById(R.id.morningTwilightText);
-        sunEvenTwilightText = view.findViewById(R.id.eveningTwilightText);
+        TextView sunMorTwilightText = view.findViewById(R.id.morningTwilightText);
+        TextView sunEvenTwilightText = view.findViewById(R.id.eveningTwilightText);
 
 
         if(data.getSunInfo()!=null){

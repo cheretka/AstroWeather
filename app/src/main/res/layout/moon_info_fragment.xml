@@ -16,20 +16,23 @@
         android:layout_weight="1"
         android:text="Dla Księżyca:\n"
         android:textSize="20sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:textColor="@color/black"/>
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        >
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="Wchód"
+            android:textColor="@color/black"
             android:textAlignment="center" />
 
         <TextView
@@ -37,6 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:textColor="@color/black"
             android:text="---"/>
     </LinearLayout>
 
@@ -52,6 +56,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:textAlignment="center"
+            android:textColor="@color/black"
             android:text="Zachód\n" />
 
         <TextView
@@ -59,6 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:textColor="@color/black"
             android:text="---"/>
     </LinearLayout>
 
@@ -74,6 +80,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:textAlignment="center"
+            android:textColor="@color/black"
             android:text="Najbliższy nów" />
 
         <TextView
@@ -81,6 +88,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:textColor="@color/black"
             android:text="---"/>
     </LinearLayout>
 
@@ -95,6 +103,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:textAlignment="center"
+            android:textColor="@color/black"
             android:text="Najbliższa pełnia\n" />
 
         <TextView
@@ -102,6 +111,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:textColor="@color/black"
             android:text="---"/>
     </LinearLayout>
 
@@ -116,6 +126,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:textAlignment="center"
+            android:textColor="@color/black"
             android:text="Faza księżyca" />
 
         <TextView
@@ -123,29 +134,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:textColor="@color/black"
             android:text="---"/>
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:textAlignment="center"
-            android:text="Dzień miesiąca synodycznego" />
-
-        <TextView
-            android:id="@+id/moon_synodic"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="---"/>
-    </LinearLayout>
 
     <Space
         android:layout_width="match_parent"

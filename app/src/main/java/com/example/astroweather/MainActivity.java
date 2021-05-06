@@ -2,10 +2,15 @@ package com.example.astroweather;
 
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Handler;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +19,7 @@ import android.widget.TextView;
 import com.astrocalculator.AstroCalculator;
 import com.astrocalculator.AstroDateTime;
 
+import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Objects;
 
@@ -21,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     private SharedPreferences fileWithDataInformation;
     private ViewPager viewPager;
-//    private boolean isTablet;
+    private boolean isTablet;
 
     private Handler handler;
     private Runnable sunAndMoonRunnable;
@@ -30,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
     private TextView dlugosc_text;
     private TextView czestotliwosc_text;
     private DataViewModel dataViewModel;
+
+    private Fragment ksiezyc_fragment;
+    private Fragment slonce_fragment;
 
 
     @Override
@@ -43,23 +52,20 @@ public class MainActivity extends AppCompatActivity {
 
         dataViewModel = ViewModelProviders.of(this).get(DataViewModel.class);
 
-        fileWithDataInformation = getSharedPreferences("saved data2", Activity.MODE_PRIVATE);
+        fileWithDataInformation = getSharedPreferences("saveddata", Activity.MODE_PRIVATE);
         setDataOnScreen();
 
-//        isTablet = getResources().getBoolean(R.bool.isTablet);
-//        if(isTablet){
-//            FragmentTransaction ft = this.fm.beginTransaction();
-//
-//            moonInfoFragment = MoonInfoFragment.newInstance();
-//            ft.replace(R.id.fragment_container, moonInfoFragment);
-//
-//            sunInfoFragment = SunInfoFragment.newInstance();
-//            ft.replace(R.id.fragment_container2, sunInfoFragment);
-//            ft.commit();
-//        } else {
-        viewPager = findViewById(R.id.view_pager);
-        viewPager.setAdapter(new Adapter(getSupportFragmentManager()));
-//        }
+
+        isTablet = getResources().getBoolean(R.bool.isTablet);
+        if(isTablet){
+            FragmentTransaction transaction = this.getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_1, new Fragment_moon());
+            transaction.replace(R.id.fragment_2, new Fragment_sun());
+            transaction.commit();
+        } else {
+            viewPager = findViewById(R.id.view_pager);
+            viewPager.setAdapter(new Adapter(getSupportFragmentManager()));
+        }
 
 
         handler = new Handler();
@@ -83,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
             setDataOnScreen();
 
             sunAndMoonRunnable = new Runnable() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
                 public void run() {
 
@@ -94,27 +101,24 @@ public class MainActivity extends AppCompatActivity {
                             new AstroDateTime(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)+1, cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), cal.get(Calendar.SECOND),cal.get(Calendar.ZONE_OFFSET)/3600_000,true),
                             new AstroCalculator.Location(szerokosc, dlugosc));
 
-                    dataViewModel.setMoonInfo(astroCalculator.getMoonInfo());
-                    dataViewModel.setSunInfo(astroCalculator.getSunInfo());
+                    dataViewModel.setAstroCal(astroCalculator);
 
 
-//                        if(isTablet){
-//                            FragmentTransaction ft = fm.beginTransaction();
-//
-//                            moonInfoFragment = MoonInfoFragment.newInstance();
-//                            ft.replace(R.id.fragment_container, moonInfoFragment);
-//
-//                            sunInfoFragment = SunInfoFragment.newInstance();
-//                            ft.replace(R.id.fragment_container2, sunInfoFragment);
-//                            ft.commit();
-//                        } else {
-                    Objects.requireNonNull(viewPager.getAdapter()).notifyDataSetChanged();
-//                        }
-
+                    if(isTablet){
+                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.fragment_1, new Fragment_moon());
+                        transaction.replace(R.id.fragment_2, new Fragment_sun());
+                        transaction.commit();
+                    } else {
+                        Objects.requireNonNull(viewPager.getAdapter()).notifyDataSetChanged();
+                    }
 
                     handler.postDelayed(this,Integer.parseInt(czestotliwosc_text.getText().toString())*1000);
                 }
             };
+
+
+
         }
     }
 
@@ -134,5 +138,14 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
         startActivityForResult(intent,1);
     }
+
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        SharedPreferences.Editor preferencesEditor = fileWithDataInformation.edit();
+//        preferencesEditor.clear();
+//        preferencesEditor.commit();
+//    }
+
 }
 

@@ -14,10 +14,62 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Dla Słońca:\n"
-        android:textSize="20sp"
-        android:textColor="@color/black"
-        android:textStyle="bold" />
+        android:text="Dla Księżyca:\n"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Wchód"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/moon_rise"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="25sp"
+            android:textColor="@color/black"
+            android:text="---"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:textSize="25sp"
+            android:textColor="@color/black"
+            android:text="Zachód\n" />
+
+        <TextView
+            android:id="@+id/moon_set"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="25sp"
+            android:textColor="@color/black"
+            android:text="---"/>
+    </LinearLayout>
 
 
     <LinearLayout
@@ -32,13 +84,15 @@
             android:layout_weight="1"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:text="Wchód" />
+            android:textSize="25sp"
+            android:text="Najbliższy nów" />
 
         <TextView
-            android:id="@+id/sunriseTimeText"
+            android:id="@+id/moon_new"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:textSize="25sp"
             android:textColor="@color/black"
             android:text="---"/>
     </LinearLayout>
@@ -55,13 +109,15 @@
             android:layout_weight="1"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:text="azymut" />
+            android:textSize="25sp"
+            android:text="Najbliższa pełnia\n" />
 
         <TextView
-            android:id="@+id/sunriseAzimuthText"
+            android:id="@+id/moon_full"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:textSize="25sp"
             android:textColor="@color/black"
             android:text="---"/>
     </LinearLayout>
@@ -77,90 +133,24 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:textAlignment="center"
+            android:textSize="25sp"
             android:textColor="@color/black"
-            android:text="Zachód" />
+            android:text="Faza księżyca" />
 
         <TextView
-            android:id="@+id/sunsetTimeText"
+            android:id="@+id/moon_phase"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:textSize="25sp"
             android:textColor="@color/black"
             android:text="---"/>
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:text="azymut" />
-
-        <TextView
-            android:id="@+id/sunsetAzimuthText"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:textColor="@color/black"
-            android:text="---"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:text="Zmierz cywilny" />
-
-        <TextView
-            android:id="@+id/morningTwilightText"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:textColor="@color/black"
-            android:text="---"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:text="Swit cywilny" />
-
-        <TextView
-            android:id="@+id/eveningTwilightText"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:textColor="@color/black"
-            android:text="---"/>
-    </LinearLayout>
 
     <Space
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"/>
-
 </LinearLayout>

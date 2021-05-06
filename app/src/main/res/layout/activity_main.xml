@@ -33,6 +33,7 @@
             android:format12Hour="hh:mm:ss"
             android:paddingBottom="20dp"
             android:textAlignment="center"
+            android:textColor="@color/black"
             android:textSize="40sp" />
 
         <LinearLayout
@@ -46,12 +47,14 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:textAlignment="center"
+                android:textColor="@color/black"
                 android:text="szerokość geogr." />
 
             <TextView
                 android:id="@+id/szerokosc_main"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:textColor="@color/black"
                 android:layout_weight="2" />
         </LinearLayout>
 
@@ -66,12 +69,14 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:textAlignment="center"
+                android:textColor="@color/black"
                 android:text="długość geogr." />
 
             <TextView
                 android:id="@+id/dlugosc_main"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:textColor="@color/black"
                 android:layout_weight="2" />
         </LinearLayout>
 
@@ -86,12 +91,14 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:textAlignment="center"
+                android:textColor="@color/black"
                 android:text="Czas odswierzania" />
 
             <TextView
                 android:id="@+id/czestotliwosc_main"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:textColor="@color/black"
                 android:layout_weight="2" />
         </LinearLayout>
 
