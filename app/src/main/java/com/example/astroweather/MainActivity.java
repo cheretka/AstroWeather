@@ -11,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.astrocalculator.AstroCalculator;
 import com.astrocalculator.AstroDateTime;
 import java.util.Calendar;
@@ -50,9 +52,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         fileWithDataInformation = getSharedPreferences("saveddata6", Activity.MODE_PRIVATE);
+
+
         setDataOnScreen();
 
-
+        setNewData();
 
 
         isTablet = getResources().getBoolean(R.bool.isTablet);
@@ -76,10 +80,37 @@ public class MainActivity extends AppCompatActivity {
 //        Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
 //        startActivityForResult(intent,1);
 
+
+
+        refreshDateThread = new Runnable() {
+
+            @Override
+            public void run() {
+
+                setNewData();
+
+                if(isTablet){
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.fragment_1, new Fragment_moon());
+                    transaction.replace(R.id.fragment_2, new Fragment_sun());
+                    transaction.commit();
+                } else {
+                    Objects.requireNonNull(viewPager.getAdapter()).notifyDataSetChanged();
+                }
+
+                Toast.makeText(getApplicationContext(), "oswierzanie", Toast.LENGTH_SHORT).show();
+
+                handler.postDelayed(this,Integer.parseInt(czestotliwosc_text.getText().toString())*1000 );
+
+            }
+        };
+
+
+        handler.post(refreshDateThread);
     }
 
 
-    void setDataOnScreen(){
+    boolean setDataOnScreen(){
 
 
         szerokosc_text.setText(fileWithDataInformation.getString("szerokosc geograficzna", "---"));
@@ -88,8 +119,24 @@ public class MainActivity extends AppCompatActivity {
 
         czestotliwosc_text.setText(fileWithDataInformation.getString("czas odswierzania", "---"));
 
+        return fileWithDataInformation.getString("szerokosc geograficzna", "---").equals("---");
+    }
+
+
+    void setNewData(){
+
+
+        Calendar cal = Calendar.getInstance();
+
+
+        AstroCalculator astroCalculator = new AstroCalculator(
+                new AstroDateTime(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)+1, cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), cal.get(Calendar.SECOND),cal.get(Calendar.ZONE_OFFSET)/3600_000,true),
+                new AstroCalculator.Location( Double.parseDouble(szerokosc_text.getText().toString()), Double.parseDouble(dlugosc_text.getText().toString())));
+
+        dataViewModel.setAstroCal(astroCalculator);
 
     }
+
 
 
     @Override
@@ -103,17 +150,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void run() {
 
-
-                    Calendar cal = Calendar.getInstance();
-
-                    AstroCalculator astroCalculator = new AstroCalculator(
-                            new AstroDateTime(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)+1, cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), cal.get(Calendar.SECOND),cal.get(Calendar.ZONE_OFFSET)/3600_000,true),
-                            new AstroCalculator.Location( Double.parseDouble(szerokosc_text.getText().toString()), Double.parseDouble(dlugosc_text.getText().toString())));
-
-                    dataViewModel.setAstroCal(astroCalculator);
-
-
-
+                    setNewData();
 
                     if(isTablet){
                         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -124,12 +161,12 @@ public class MainActivity extends AppCompatActivity {
                         Objects.requireNonNull(viewPager.getAdapter()).notifyDataSetChanged();
                     }
 
+                    Toast.makeText(getApplicationContext(), "oswierzanie", Toast.LENGTH_SHORT).show();
 
                     handler.postDelayed(this,Integer.parseInt(czestotliwosc_text.getText().toString())*1000 );
 
                 }
             };
-
 
         }
     }

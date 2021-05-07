@@ -59,7 +59,7 @@ public class Fragment_moon extends Fragment {
             newMoon_text.setText(String.format("%02d/%02d/%04d", data.getMoonInfo().getNextNewMoon().getDay(),  data.getMoonInfo().getNextNewMoon().getMonth(), data.getMoonInfo().getNextNewMoon().getYear()));
             fullMoon_text.setText(String.format("%02d/%02d/%04d", data.getMoonInfo().getNextFullMoon().getDay(),  data.getMoonInfo().getNextFullMoon().getMonth(), data.getMoonInfo().getNextFullMoon().getYear()));
 
-            moonPhase_text.setText(String.format("%.02f%%", data.getMoonInfo().getIllumination()));
+            moonPhase_text.setText(String.format("%f%%", data.getMoonInfo().getIllumination()));
         }
 
 
