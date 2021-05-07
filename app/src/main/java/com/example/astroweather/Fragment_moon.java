@@ -15,7 +15,9 @@ import android.widget.TextView;
 
 public class Fragment_moon extends Fragment {
 
+
     private DataViewModel data;
+
 
     public Fragment_moon() {
     }
@@ -23,15 +25,19 @@ public class Fragment_moon extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         data = ViewModelProviders.of(getActivity()).get(DataViewModel.class);
         setRetainInstance(true);
+
     }
+
 
 
     @SuppressLint("DefaultLocale")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
 
         View view = inflater.inflate(R.layout.moon_info_fragment, container, false);
 
@@ -46,6 +52,7 @@ public class Fragment_moon extends Fragment {
 
 
         if(data.getMoonInfo()!=null) {
+
             moonrise_text.setText(String.format("%d:%02d:%02d", data.getMoonInfo().getMoonrise().getHour(), data.getMoonInfo().getMoonrise().getMinute(), data.getMoonInfo().getMoonrise().getSecond()) );
             moonset_text.setText(String.format("%d:%02d:%02d", data.getMoonInfo().getMoonset().getHour(), data.getMoonInfo().getMoonset().getMinute(), data.getMoonInfo().getMoonset().getSecond()) );
 
@@ -54,6 +61,7 @@ public class Fragment_moon extends Fragment {
 
             moonPhase_text.setText(String.format("%.02f%%", data.getMoonInfo().getIllumination()));
         }
+
 
         return view;
     }

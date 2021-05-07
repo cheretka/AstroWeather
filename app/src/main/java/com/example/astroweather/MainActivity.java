@@ -20,6 +20,7 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
+
     private SharedPreferences fileWithDataInformation;
     private ViewPager viewPager;
     private boolean isTablet;
@@ -34,17 +35,24 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
         szerokosc_text = findViewById(R.id.szerokosc_main);
         dlugosc_text = findViewById(R.id.dlugosc_main);
         czestotliwosc_text = findViewById(R.id.czestotliwosc_main);
 
+
         dataViewModel = ViewModelProviders.of(this).get(DataViewModel.class);
+
 
         fileWithDataInformation = getSharedPreferences("saveddata6", Activity.MODE_PRIVATE);
         setDataOnScreen();
+
+
 
 
         isTablet = getResources().getBoolean(R.bool.isTablet);
@@ -59,17 +67,28 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+
+
         handler = new Handler();
+
+
 
 //        Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
 //        startActivityForResult(intent,1);
+
     }
 
 
     void setDataOnScreen(){
+
+
         szerokosc_text.setText(fileWithDataInformation.getString("szerokosc geograficzna", "---"));
+
         dlugosc_text.setText(fileWithDataInformation.getString("dlugosc geograficzna", "---"));
+
         czestotliwosc_text.setText(fileWithDataInformation.getString("czas odswierzania", "---"));
+
+
     }
 
 
@@ -84,12 +103,16 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void run() {
 
+
                     Calendar cal = Calendar.getInstance();
+
                     AstroCalculator astroCalculator = new AstroCalculator(
                             new AstroDateTime(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)+1, cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), cal.get(Calendar.SECOND),cal.get(Calendar.ZONE_OFFSET)/3600_000,true),
                             new AstroCalculator.Location( Double.parseDouble(szerokosc_text.getText().toString()), Double.parseDouble(dlugosc_text.getText().toString())));
 
                     dataViewModel.setAstroCal(astroCalculator);
+
+
 
 
                     if(isTablet){
@@ -103,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                     handler.postDelayed(this,Integer.parseInt(czestotliwosc_text.getText().toString())*1000 );
+
                 }
             };
 
@@ -113,14 +137,18 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+
         super.onResume();
         handler.post(refreshDateThread);
+
     }
 
     @Override
     protected void onPause() {
+
         super.onPause();
         handler.removeCallbacks(refreshDateThread);
+
     }
 
 
@@ -128,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
         startActivityForResult(intent,1);
+
     }
 
 //    @Override

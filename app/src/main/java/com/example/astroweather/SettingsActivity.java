@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 
 public class SettingsActivity extends AppCompatActivity {
 
+
     private SharedPreferences fileWithDataInformation;
     private EditText latitude_text, longitude_text, frequency_text;
 
@@ -40,7 +41,10 @@ public class SettingsActivity extends AppCompatActivity {
 
 
     public void funSaveNewData(View view) {
+
+
         if(ifAllInfoGood()){
+
             SharedPreferences.Editor preferencesEditor = fileWithDataInformation.edit();
             preferencesEditor.putString("szerokosc geograficzna", latitude_text.getText().toString());
             preferencesEditor.putString("dlugosc geograficzna", longitude_text.getText().toString());
@@ -51,25 +55,33 @@ public class SettingsActivity extends AppCompatActivity {
             setResult(Activity.RESULT_OK, returnIntent);
             finish();
         }
+
     }
 
 
 
     boolean ifAllInfoGood(){
+
+
         String text_szerokosc = latitude_text.getText().toString();
         String text_dlugosc = longitude_text.getText().toString();
         String text_czestotliwosc = frequency_text.getText().toString();
+
+
 
         if (TextUtils.isEmpty(text_szerokosc) || TextUtils.isEmpty(text_dlugosc) || TextUtils.isEmpty(text_czestotliwosc) || Integer.parseInt(text_czestotliwosc)<1 || Integer.parseInt(text_czestotliwosc)>900){
             Toast.makeText(this, "prosze poprawić dane wejściowe", Toast.LENGTH_SHORT).show();
             return false;
         }
+
+
         BigDecimal szerokosc = new BigDecimal(text_szerokosc);
         BigDecimal dlugosc = new BigDecimal(text_dlugosc);
         if(szerokosc.compareTo(BigDecimal.valueOf(90)) > 0 || szerokosc.compareTo(BigDecimal.valueOf(-90)) < 0 || dlugosc.compareTo(BigDecimal.valueOf(180)) > 0 || dlugosc.compareTo(BigDecimal.valueOf(-180)) < 0){
             Toast.makeText(this, "prosze poprawić dane wejściowe", Toast.LENGTH_SHORT).show();
             return false;
         }
+
 
         return true;
     }
